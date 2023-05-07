@@ -1,18 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 
-const folderPath =  path.join(__dirname, 'files')
-const folderCopyPath = path.join(__dirname, 'files-copy');
+const sourceFolderName = 'files'
+const targetFolderName = 'files-copy'
+const folderPath = path.join(__dirname, sourceFolderName);
+const folderCopyPath = path.join(__dirname, targetFolderName);
 
 const copyFiles = () => {
   // Создание папки
-  fs.mkdir(folderCopyPath, { recursive: true }, (err) => {
+  fs.mkdir(folderCopyPath, {recursive: true}, (err) => {
 
     // Перебор и копирование файлов
     fs.readdir(folderPath, (err, files) => {
       files.forEach(file => {
-        const sourceFile = path.join(__dirname, 'files', file);
-        const targetFile = path.join(__dirname, 'files-copy', file);
+        const sourceFile = path.join(__dirname, sourceFolderName, file);
+        const targetFile = path.join(__dirname, targetFolderName, file);
 
         fs.readFile(sourceFile, (err, data) => {
           if (err) throw err;
@@ -32,12 +34,14 @@ fs.access(folderCopyPath, (err) => {
   if (!err) {
     
     // Удалить копию папки, если она уже существует
-    fs.rmdir(folderCopyPath, { recursive: true }, (err) => {
-      copyFiles()
+    fs.rmdir(folderCopyPath, {recursive: true}, (err) => {
+      console.log('\033[32m' + `Папка ${targetFolderName} успешно обновлена.` + '\033[0m');
+      copyFiles();
     });
-    
+
   } else {
     // Копировать без удаления
-    copyFiles()
+    console.log('\033[34m' + `Папка ${targetFolderName} создана.` + '\033[0m');
+    copyFiles();
   }
 });
