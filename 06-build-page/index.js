@@ -33,7 +33,7 @@ const compileProject = () => {
         items.forEach(item => {
           const itemPath = path.join(folder, item.name);
           const relativePath = path.relative(srcAssetsPath, itemPath);
-          const itemPathBundle = path.join(distFolderPath, relativePath);
+          const itemPathBundle = path.join(distFolderPath, srcAssetsFolder, relativePath);
           if (item.isDirectory()) {
             fs.mkdir(itemPathBundle, { recursive: true }, (err) => {});
             readFolder(itemPath);
